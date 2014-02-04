@@ -344,8 +344,9 @@
     <target name="upload-release" >
         <echo message="Releasing ${namespace}_${module}-${release.version}.tgz on ${pear.channel}..."/>
     	<exec executable="${curl.bin}"  outputproperty="exec.response">
-			<arg line='-F hash="${pear.api.hash}" -F qqfile=@"${php-target.dir}/${namespace}-${release.version}.tgz" -s http://${pear.channel}/upload'/>
+			<arg line='-F hash="${pear.api.hash}" -F qqfile=@"${php-target.dir}/${namespace}_${module}-${release.version}.tgz" -s http://${pear.channel}/upload'/>
 		</exec>
+		<echo>${exec.response}</echo>
     </target>
     <!-- ==================================================================== -->
     <!-- Release new patch version                                            -->
@@ -389,6 +390,9 @@
         <exec executable="${git.bin}" dir="${basedir}">
             <arg line="commit -a -m '${release.changelog}'" />
         </exec>
+		<exec executable="${git.bin}" dir="${basedir}">
+			<arg line="push" />
+		</exec>
         <exec executable="${git.bin}" dir="${basedir}">
             <arg line="tag -a -m '${release.changelog}' release-${tag.release.version}" />
         </exec>
